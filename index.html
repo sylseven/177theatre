@@ -584,17 +584,49 @@ select:focus{
           <option value="IF线">IF线</option>
           <option value="刀子虐心">刀子虐心</option>
           <option value="搞笑沙雕">搞笑沙雕</option>
+          <option value="破镜重圆">破镜重圆</option>
+          <option value="战损照顾">战损照顾</option>
+          <option value="婚后日常">婚后日常</option>
+          <option value="黑化边缘">黑化边缘</option>
+          <option value="久别重逢">久别重逢</option>
+          <option value="暗恋成真">暗恋成真</option>
+          <option value="双向奔赴">双向奔赴</option>
+          <option value="宿敌变情人">宿敌变情人</option>
+          <option value="带娃日常">带娃日常</option>
+          <option value="穿越/重生">穿越/重生</option>
+          <option value="ABO设定">ABO设定</option>
+          <option value="末世生存">末世生存</option>
+          <option value="灵异神怪">灵异神怪</option>
+          <option value="无限流">无限流</option>
+          <option value="星际科幻">星际科幻</option>
+          <option value="西幻魔法">西幻魔法</option>
+          <option value="武侠修真">武侠修真</option>
+          <option value="宫廷侯爵">宫廷侯爵</option>
+          <option value="娱乐圈">娱乐圈</option>
+          <option value="电竞游戏">电竞游戏</option>
+          <option value="直播互动">直播互动</option>
           <option value="自定义">自定义</option>
         </select>
 
         <label>自定义类型 / 补充标签</label>
-        <input id="customType" placeholder="例如：破镜重圆、战损照顾、婚后日常" />
+        <input id="customType" placeholder="例如：替身梗、带球跑、追妻火葬场" />
 
         <label>字数偏好</label>
         <input id="wordCount" placeholder="例如填写：3000。不填则字数无上限" />
 
         <label>剧情灵感 (交由AI扩写)</label>
         <textarea id="plot" placeholder="填写你想生成的小剧场剧情要素。AI会根据你提供的内容，自动扩写成一段充满张力、细节丰富的小剧场指令模板。"></textarea>
+
+        <div class="switch-line">
+          <div>
+            <b>自动翻译开关</b>
+            <span>若角色说外语，自动翻译成中文（带括号或直接转译）。</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="translateToggle" />
+            <span class="slider"></span>
+          </label>
+        </div>
 
         <div class="switch-line">
           <div>
@@ -631,8 +663,55 @@ select:focus{
 
       <!-- ================= 直接代入模式 ================= -->
       <div id="generateModeArea" style="display:none;">
-        <label>小剧场模板 / 剧情要求</label>
-        <textarea id="templateInput" placeholder="在此粘贴小剧场剧情模板（可以从上方模板模式生成后复制过来，也可填别人写的）..." style="min-height:110px;"></textarea>
+        
+        <label>小剧场类型 (代入模式专用)</label>
+        <select id="genSceneType">
+          <option value="普通番外">普通番外</option>
+          <option value="甜饼日常">甜饼日常</option>
+          <option value="暧昧拉扯">暧昧拉扯</option>
+          <option value="修罗场">修罗场</option>
+          <option value="吵架和好">吵架和好</option>
+          <option value="病弱照顾">病弱照顾</option>
+          <option value="雨夜谈心">雨夜谈心</option>
+          <option value="校园番外">校园番外</option>
+          <option value="职场番外">职场番外</option>
+          <option value="同居日常">同居日常</option>
+          <option value="梦向番外">梦向番外</option>
+          <option value="IF线">IF线</option>
+          <option value="刀子虐心">刀子虐心</option>
+          <option value="搞笑沙雕">搞笑沙雕</option>
+          <option value="破镜重圆">破镜重圆</option>
+          <option value="战损照顾">战损照顾</option>
+          <option value="婚后日常">婚后日常</option>
+          <option value="黑化边缘">黑化边缘</option>
+          <option value="久别重逢">久别重逢</option>
+          <option value="暗恋成真">暗恋成真</option>
+          <option value="双向奔赴">双向奔赴</option>
+          <option value="宿敌变情人">宿敌变情人</option>
+          <option value="带娃日常">带娃日常</option>
+          <option value="穿越/重生">穿越/重生</option>
+          <option value="ABO设定">ABO设定</option>
+          <option value="末世生存">末世生存</option>
+          <option value="灵异神怪">灵异神怪</option>
+          <option value="无限流">无限流</option>
+          <option value="星际科幻">星际科幻</option>
+          <option value="西幻魔法">西幻魔法</option>
+          <option value="武侠修真">武侠修真</option>
+          <option value="宫廷侯爵">宫廷侯爵</option>
+          <option value="娱乐圈">娱乐圈</option>
+          <option value="电竞游戏">电竞游戏</option>
+          <option value="直播互动">直播互动</option>
+          <option value="自定义">自定义</option>
+        </select>
+
+        <label>自定义类型 / 补充标签</label>
+        <input id="genCustomType" placeholder="例如：破镜重圆、战损照顾、婚后日常" />
+
+        <label>字数偏好</label>
+        <input id="genWordCount" placeholder="例如填写：3000。不填则字数无上限" />
+
+        <label>生成偏好 / 剧情设定模板</label>
+        <textarea id="templateInput" placeholder="在此写下剧情发展的大致方向，或粘贴生成好的剧情模板..." style="min-height:110px;"></textarea>
 
         <label>角色 A / char 人设</label>
         <div class="file-box">
@@ -647,6 +726,28 @@ select:focus{
           <input type="file" id="charBFile" accept=".txt,.docx,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
         </div>
         <textarea id="charB" placeholder="粘贴或导入角色B / USER 的人设、身份、性格等。"></textarea>
+
+        <div class="switch-line">
+          <div>
+            <b>自动翻译开关</b>
+            <span>若角色说外语，自动在对话中将其翻译成中文。</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="genTranslateToggle" />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="switch-line">
+          <div>
+            <b>NSFW 开关</b>
+            <span>开启后，允许并引导成人向输出。</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="genNsfwToggle" />
+            <span class="slider"></span>
+          </label>
+        </div>
 
         <div class="switch-line">
           <div>
@@ -848,12 +949,18 @@ const DEFAULT_STATE = {
   customType: "",
   wordCount: "",
   plot: "",
+  translate: false,
   nsfw: false,
   withOptions: false,
   templateOutput: "", 
   
   // ================= 代入模式专属 =================
-  templateInput: "",
+  genSceneType: "普通番外",
+  genCustomType: "",
+  genWordCount: "",
+  genTranslate: false,
+  genNsfw: false,
+  templateInput: "", // 现叫生成偏好/剧情设定
   charA: "",
   charB: "",
   directOption: false,
@@ -999,6 +1106,7 @@ async function loadState(){
     if(!state.historyMode) state.historyMode = "template"; 
     if(!state.storyBlocks) state.storyBlocks = [];
     if(!state.charPresets) state.charPresets = [];
+    if(typeof state.genSceneType === 'undefined') state.genSceneType = "普通番外";
     
     // 向下兼容旧的 output
     if(d.output && !d.templateOutput && !d.generateOutput){
@@ -1082,10 +1190,16 @@ function collectForm(){
   state.customType = $("customType").value;
   state.wordCount = $("wordCount").value;
   state.plot = $("plot").value;
+  state.translate = $("translateToggle").checked;
   state.nsfw = $("nsfwToggle").checked;
   state.withOptions = $("optionToggle").checked;
 
   // 代入模式字段
+  state.genSceneType = $("genSceneType").value;
+  state.genCustomType = $("genCustomType").value;
+  state.genWordCount = $("genWordCount").value;
+  state.genTranslate = $("genTranslateToggle").checked;
+  state.genNsfw = $("genNsfwToggle").checked;
   state.templateInput = $("templateInput").value;
   state.charA = $("charA").value;
   state.charB = $("charB").value;
@@ -1100,13 +1214,21 @@ function fillForm(){
   $("generateModeArea").style.display = mode === "generate" ? "block" : "none";
   $("presetArea").style.display = mode === "generate" ? "block" : "none";
 
+  // 模板模式字段填充
   $("sceneType").value = state.sceneType || "普通番外";
   $("customType").value = state.customType || "";
   $("wordCount").value = state.wordCount || "";
   $("plot").value = state.plot || "";
+  $("translateToggle").checked = !!state.translate;
   $("nsfwToggle").checked = !!state.nsfw;
   $("optionToggle").checked = !!state.withOptions;
 
+  // 代入模式字段填充
+  $("genSceneType").value = state.genSceneType || "普通番外";
+  $("genCustomType").value = state.genCustomType || "";
+  $("genWordCount").value = state.genWordCount || "";
+  $("genTranslateToggle").checked = !!state.genTranslate;
+  $("genNsfwToggle").checked = !!state.genNsfw;
   $("templateInput").value = state.templateInput || "";
   $("charA").value = state.charA || "";
   $("charB").value = state.charB || "";
@@ -1135,8 +1257,13 @@ function renderOutput(){
   $("directControls").style.display = showControls ? "block" : "none";
 }
 
-/* 自动保存 */
-["sceneType","customType","wordCount","plot","nsfwToggle","optionToggle","templateInput","charA","charB","directOptionToggle"].forEach(id=>{
+/* 自动保存绑定的ID列表 */
+const autoSaveIds = [
+  "sceneType","customType","wordCount","plot","translateToggle","nsfwToggle","optionToggle",
+  "genSceneType","genCustomType","genWordCount","genTranslateToggle","genNsfwToggle","templateInput","charA","charB","directOptionToggle"
+];
+
+autoSaveIds.forEach(id=>{
   $(id).addEventListener("input", async ()=>{ collectForm(); await saveState(); });
   $(id).addEventListener("change", async ()=>{ collectForm(); await saveState(); });
 });
@@ -1147,6 +1274,7 @@ $("buildTemplateBtn").addEventListener("click", async () => {
   
   const type = state.sceneType === "自定义" ? (state.customType || "自定义类型") : state.sceneType + (state.customType ? " / " + state.customType : "");
   const wordLimit = state.wordCount ? `回复不少于${state.wordCount}字` : "字数无上限";
+  const transText = state.translate ? "如果角色是外国人或说外语，请在对话时自动附带中文翻译，" : "";
   const nsfwText = state.nsfw ? "成人向表达更直接，仅限成年人、合意、合法关系，" : "";
   const optText = state.withOptions ? "\n\n【结尾选项要求】\n小剧场正文结束后，请必须额外给出三个后续选项，格式如下：\nA. xxx\nB. xxx\nC. xxx\n选项要能引导下一段剧情发展。" : "";
 
@@ -1156,14 +1284,14 @@ $("buildTemplateBtn").addEventListener("click", async () => {
 - 小剧场类型：${type}
 - 字数要求：${wordLimit}
 - 剧情灵感：${state.plot || "请帮我随机构思一个符合该类型设定的精彩小剧场"}
-- 额外限制：${nsfwText}不计入记忆区，不计入主线剧情，不需要状态栏，不得OOC，严格按照两人的人设描写。
+- 额外限制：${transText}${nsfwText}不计入记忆区，不计入主线剧情，不需要状态栏，不得OOC，严格按照两人的人设描写。
 
 任务：
 请参考下方格式，发挥你的创意，将用户的“剧情灵感”扩写成一段200字左右的详细情境描写（明确场景细节、前置条件、双方心理预期等，让生成的剧情更有张力）。
 【注意：你只用输出包含在【】内的最终模板，不需要多余的解释。】
 
 参考格式：
-【现在暂停剧情演绎，为我生成一个番外小剧场，标题自拟。要求内容符合${type}，${nsfwText}不计入记忆区，不计入主线剧情，不需要状态栏，${wordLimit}，不得OOC，严格按照两人的人设描写。剧情内容：(这里放你扩写后的详细剧情指令)...】${optText}`;
+【现在暂停剧情演绎，为我生成一个番外小剧场，标题自拟。要求内容符合${type}，${transText}${nsfwText}不计入记忆区，不计入主线剧情，不需要状态栏，${wordLimit}，不得OOC，严格按照两人的人设描写。剧情内容：(这里放你扩写后的详细剧情指令)...】${optText}`;
 
   setLoading("templateLoading", true);
   try{
@@ -1191,6 +1319,7 @@ $("clearTemplateBtn").addEventListener("click", async () => {
   state.customType = "";
   state.wordCount = "";
   state.plot = "";
+  state.translate = false;
   state.nsfw = false;
   state.withOptions = false;
   fillForm();
@@ -1214,7 +1343,7 @@ async function executeApiCall(promptMsg, isBreakpoint, isFirst, isReroll = false
   try{
     const blocksToSend = isReroll ? state.storyBlocks.slice(0, -1) : state.storyBlocks;
     
-    const msgs = [{ role: "system", content: "你是小剧场番外写作助手，擅长按照给定人设和剧情要求生成完整正文。遵守给定的所有人设细节、关系、剧情发展要求，禁止OOC，直接输出正文，不允许截断。" }];
+    const msgs = [{ role: "system", content: "你是小剧场番外写作助手，擅长按照给定人设和剧情设定生成完整正文。遵守给定的所有人设细节、关系、分级要求，禁止OOC，直接输出正文，不允许截断。" }];
     for(let b of blocksToSend){
       msgs.push(b.promptMsg);
       msgs.push({ role: "assistant", content: b.responseText });
@@ -1242,10 +1371,14 @@ async function executeApiCall(promptMsg, isBreakpoint, isFirst, isReroll = false
 
 $("generateTextBtn").addEventListener("click", async () => {
   collectForm();
-  if(!state.templateInput.trim()) return toast("请先填写小剧场模板 / 剧情要求");
   
-  let promptText = `【小剧场剧情要求】\n${state.templateInput}\n\n【角色 A / char 人设】\n${state.charA || "未填写"}\n\n【角色 B / USER 人设】\n${state.charB || "未填写"}\n\n【写作要求】\n请根据以上人设，严格按照【小剧场剧情要求】中的字数、设定进行创作。直接输出正文内容，不要输出大纲，不截断。`;
+  const type = state.genSceneType === "自定义" ? (state.genCustomType || "自定义") : state.genSceneType + (state.genCustomType ? " / " + state.genCustomType : "");
+  const wordText = state.genWordCount ? `不少于 ${state.genWordCount} 字` : "无上限";
+  const nsfwText = state.genNsfw ? "开启 (成人向表达更直接，仅限成年人、合意、合法关系，无底线)" : "关闭 (常规尺度)";
   
+  let promptText = `【基础设定】\n- 小剧场类型：${type}\n- 字数偏好：${wordText}\n- NSFW/成人向：${nsfwText}\n\n【生成偏好 / 剧情设定模板】\n${state.templateInput || "无特殊偏好要求，请自由发挥"}\n\n【角色 A / char 人设】\n${state.charA || "未填写"}\n\n【角色 B / USER 人设】\n${state.charB || "未填写"}\n\n【写作要求】\n请根据以上人设，严格按照给定的类型、字数、偏好设定进行创作。不需要写大纲，不截断，直接开始输出正文内容。`;
+  
+  if (state.genTranslate) promptText += `\n\n【特殊要求】若角色设定为外国人或使用外语，请在对话时自动附带精准的中文翻译（或直接使用中文表达但保留其外语口癖）。`;
   if (state.directOption) promptText += `\n\n【结尾选项要求】\n正文结束后，请必须额外给出三个后续选项，格式如下：\nA. xxx\nB. xxx\nC. xxx`;
 
   state.storyBlocks = []; // 重置
@@ -1259,6 +1392,7 @@ $("continueBtn").addEventListener("click", async () => {
   
   let promptText = "请继续顺着上文续写。";
   if(userInput) promptText += `\n剧情走向/选择要求：${userInput}。`;
+  if(state.genTranslate) promptText += `\n若包含外语对白请附带中文翻译。`;
   if(state.directOption) promptText += `\n请在本次输出结尾附带三个后续发展选项(A/B/C)。`;
   promptText += "\n直接输出后续正文内容，不要重复上文，不要截断。";
 
@@ -1280,9 +1414,15 @@ $("rerollBtn").addEventListener("click", async () => {
 
 $("clearGenerateBtn").addEventListener("click", async () => {
   if(!confirm("确定清空代入模式所有输入和生成的正文？")) return;
+  state.genSceneType = "普通番外";
+  state.genCustomType = "";
+  state.genWordCount = "";
+  state.genTranslate = false;
+  state.genNsfw = false;
   state.templateInput = "";
   state.charA = "";
   state.charB = "";
+  state.directOption = false;
   state.storyBlocks = [];
   state.generateOutput = "";
   fillForm();
@@ -1385,7 +1525,7 @@ $("saveCurrentBtn").addEventListener("click", async () => {
   if(!text || !text.trim()) return toast("当前没有内容可保存");
 
   const isTemplate = state.workMode === "template";
-  const title = isTemplate ? `[模板] ${state.sceneType}` : `[正文] ${(state.templateInput || "未命名").replace(/\s+/g,"").slice(0,18)}`;
+  const title = isTemplate ? `[模板] ${state.sceneType}` : `[正文] ${state.genSceneType}`;
 
   const item = {
     id: uid("scene"),
@@ -1393,15 +1533,21 @@ $("saveCurrentBtn").addEventListener("click", async () => {
     title: title,
     createdAt: Date.now(),
     time: new Date().toLocaleString(),
-    // 基础数据
-    sceneType: state.sceneType, customType: state.customType,
-    wordCount: state.wordCount, nsfw: state.nsfw, withOptions: state.withOptions,
-    // 对应模式的专用数据
+    
+    // 把两边不同的变量映射为同一个字段，方便历史列表渲染
+    sceneType: isTemplate ? state.sceneType : state.genSceneType,
+    customType: isTemplate ? state.customType : state.genCustomType,
+    wordCount: isTemplate ? state.wordCount : state.genWordCount,
+    translate: isTemplate ? state.translate : state.genTranslate,
+    nsfw: isTemplate ? state.nsfw : state.genNsfw,
+    
+    // 特有字段
     plot: isTemplate ? state.plot : "",
     output: text,
     templateInput: isTemplate ? "" : state.templateInput,
     charA: isTemplate ? "" : state.charA,
     charB: isTemplate ? "" : state.charB,
+    withOptions: isTemplate ? state.withOptions : false,
     directOption: isTemplate ? false : state.directOption,
     storyBlocks: isTemplate ? [] : state.storyBlocks
   };
@@ -1432,7 +1578,8 @@ async function renderHistory(){
       <div class="list-title">${escapeHtml(item.title || "未命名记录")}</div>
       <div class="list-preview">${escapeHtml(item.output || "")}</div>
       <div class="meta">
-        ${item.sceneType && item.workMode === 'template' ? `<span class="tag">${escapeHtml(item.sceneType)}</span>` : ""}
+        ${item.sceneType ? `<span class="tag">${escapeHtml(item.sceneType)}</span>` : ""}
+        ${item.translate ? `<span class="tag">含翻译</span>` : ""}
         ${item.nsfw ? `<span class="tag">NSFW</span>` : ""}
         ${item.withOptions || item.directOption ? `<span class="tag">带选项</span>` : ""}
         <span>${escapeHtml(item.time || "")}</span>
@@ -1459,11 +1606,17 @@ async function loadHistory(id){
     state.sceneType = item.sceneType || "普通番外";
     state.customType = item.customType || "";
     state.wordCount = item.wordCount || "";
-    state.plot = item.plot || "";
+    state.translate = !!item.translate;
     state.nsfw = !!item.nsfw;
     state.withOptions = !!item.withOptions;
+    state.plot = item.plot || "";
     state.templateOutput = item.output || "";
   } else {
+    state.genSceneType = item.sceneType || "普通番外";
+    state.genCustomType = item.customType || "";
+    state.genWordCount = item.wordCount || "";
+    state.genTranslate = !!item.translate;
+    state.genNsfw = !!item.nsfw;
     state.templateInput = item.templateInput || "";
     state.charA = item.charA || "";
     state.charB = item.charB || "";
@@ -1508,7 +1661,7 @@ function downloadBlob(blob, filename){
   URL.revokeObjectURL(url);
 }
 function safeFileName(){
-  const base = state.workMode === "template" ? (state.sceneType || "模板") : ((state.templateInput||"").slice(0,8) || "正文");
+  const base = state.workMode === "template" ? (state.sceneType || "模板") : (state.genSceneType || "正文");
   return String(base).replace(/[\\/:*?"<>|]/g,"_").slice(0,60);
 }
 
