@@ -87,6 +87,34 @@ body{
   font-size:12px;
 }
 
+/* 模式切换 */
+.mode-switch {
+  display: flex;
+  background: var(--soft);
+  border-radius: 999px;
+  padding: 4px;
+  margin-bottom: 16px;
+}
+
+.m-tab, .h-tab {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #777;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 10px 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.m-tab.active, .h-tab.active {
+  background: #fff;
+  color: #111;
+  box-shadow: 0 4px 12px rgba(0,0,0,.06);
+}
+
 label{
   display:block;
   font-size:12px;
@@ -197,6 +225,8 @@ select:focus{
 .btn:active,
 .icon-btn:active,
 .tab:active,
+.m-tab:active,
+.h-tab:active,
 .list-item:active{
   transform:scale(.98);
 }
@@ -420,7 +450,7 @@ select:focus{
   gap:8px;
   color:#555;
   font-size:13px;
-  margin-top:10px;
+  margin-top:16px;
 }
 
 .loading.show{
@@ -498,6 +528,10 @@ select:focus{
   color:#777;
   line-height:1.55;
   white-space:pre-wrap;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
 }
 
 @media(max-width:360px){
@@ -517,129 +551,191 @@ select:focus{
           <h1>177の小剧场生成器</h1>
           <p>番外 / IF / 甜饼 / 刀子 / 梦向 / 自定义</p>
         </div>
-        <button class="icon-btn" id="quickGenerateBtn" title="生成">✦</button>
+        <button class="icon-btn" id="quickGenerateBtn" title="快速生成">✦</button>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" style="padding-top:12px;">
       <div class="section-title">
-        <h2>小剧场配置</h2>
-        <small>自行选择类型</small>
+        <h2>工作模式</h2>
+        <small>彻底分离的两个工作流</small>
       </div>
 
-      <label>小剧场类型</label>
-      <select id="sceneType">
-        <option value="普通番外">普通番外</option>
-        <option value="甜饼日常">甜饼日常</option>
-        <option value="暧昧拉扯">暧昧拉扯</option>
-        <option value="修罗场">修罗场</option>
-        <option value="吵架和好">吵架和好</option>
-        <option value="病弱照顾">病弱照顾</option>
-        <option value="雨夜谈心">雨夜谈心</option>
-        <option value="校园番外">校园番外</option>
-        <option value="职场番外">职场番外</option>
-        <option value="同居日常">同居日常</option>
-        <option value="梦向番外">梦向番外</option>
-        <option value="IF线">IF线</option>
-        <option value="刀子虐心">刀子虐心</option>
-        <option value="搞笑沙雕">搞笑沙雕</option>
-        <option value="自定义">自定义</option>
-      </select>
-
-      <label>自定义类型 / 补充标签</label>
-      <input id="customType" placeholder="例如：破镜重圆、战损照顾、婚后日常、黑化边缘" />
-
-      <label>角色 A / char 人设</label>
-      <div class="file-box">
-        <b>导入 char 人设文档</b>
-        <div class="small-note">支持 txt / docx，导入后会自动填入下方角色 A 人设。</div>
-        <input type="file" id="charAFile" accept=".txt,.docx,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+      <div class="mode-switch">
+        <button class="m-tab active" data-mode="template">生成模板</button>
+        <button class="m-tab" data-mode="generate">直接代入</button>
       </div>
-      <textarea id="charA" placeholder="粘贴或导入角色A / char 的人设、身份、性格、说话方式、关系等。"></textarea>
 
-      <label>角色 B / USER 人设</label>
-      <div class="file-box">
-        <b>导入 USER 人设文档</b>
-        <div class="small-note">支持 txt / docx，导入后会自动填入下方角色 B / USER 人设。</div>
-        <input type="file" id="charBFile" accept=".txt,.docx,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
-      </div>
-      <textarea id="charB" placeholder="粘贴或导入角色B / USER 的人设、身份、性格、说话方式、和角色A的关系等。"></textarea>
+      <!-- ================= 生成模板模式 ================= -->
+      <div id="templateModeArea">
+        <label>小剧场类型</label>
+        <select id="sceneType">
+          <option value="普通番外">普通番外</option>
+          <option value="甜饼日常">甜饼日常</option>
+          <option value="暧昧拉扯">暧昧拉扯</option>
+          <option value="修罗场">修罗场</option>
+          <option value="吵架和好">吵架和好</option>
+          <option value="病弱照顾">病弱照顾</option>
+          <option value="雨夜谈心">雨夜谈心</option>
+          <option value="校园番外">校园番外</option>
+          <option value="职场番外">职场番外</option>
+          <option value="同居日常">同居日常</option>
+          <option value="梦向番外">梦向番外</option>
+          <option value="IF线">IF线</option>
+          <option value="刀子虐心">刀子虐心</option>
+          <option value="搞笑沙雕">搞笑沙雕</option>
+          <option value="自定义">自定义</option>
+        </select>
 
-      <label>剧情内容</label>
-      <textarea id="plot" placeholder="写你想生成的小剧场剧情内容。例如：雨夜，A发现B发烧却还在嘴硬，两人第一次认真谈到过去的误会。"></textarea>
+        <label>自定义类型 / 补充标签</label>
+        <input id="customType" placeholder="例如：破镜重圆、战损照顾、婚后日常" />
 
-      <div class="switch-line">
-        <div>
-          <b>NSFW 开关</b>
-          <span>开启后使用成人向番外模板。仅允许成年人、合意、合法关系。</span>
+        <label>字数偏好</label>
+        <input id="wordCount" placeholder="例如填写：3000。不填则字数无上限" />
+
+        <label>剧情灵感 (交由AI扩写)</label>
+        <textarea id="plot" placeholder="填写你想生成的小剧场剧情要素。AI会根据你提供的内容，自动扩写成一段充满张力、细节丰富的小剧场指令模板。"></textarea>
+
+        <div class="switch-line">
+          <div>
+            <b>NSFW 开关</b>
+            <span>开启后模板会增加成人向限定词。</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="nsfwToggle" />
+            <span class="slider"></span>
+          </label>
         </div>
-        <label class="switch">
-          <input type="checkbox" id="nsfwToggle" />
-          <span class="slider"></span>
-        </label>
-      </div>
 
-      <div class="switch-line">
-        <div>
-          <b>结尾选项开关</b>
-          <span>开启后，小剧场结尾会附带 A / B / C 三个后续选项。</span>
+        <div class="switch-line">
+          <div>
+            <b>结尾选项开关</b>
+            <span>开启后模板会附带 A/B/C 后续选项要求。</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="optionToggle" />
+            <span class="slider"></span>
+          </label>
         </div>
-        <label class="switch">
-          <input type="checkbox" id="optionToggle" />
-          <span class="slider"></span>
-        </label>
+
+        <div class="btn-row">
+          <button class="btn" id="buildTemplateBtn">✦ 让 AI 扩写模板</button>
+          <button class="btn danger" id="clearTemplateBtn">清空输入</button>
+        </div>
+        
+        <div class="loading" id="templateLoading">
+          <div class="spinner"></div>
+          <span>AI 正在构思模板剧情……</span>
+        </div>
       </div>
 
-      <label>生成模板预览</label>
-      <textarea id="templatePreview" readonly></textarea>
+      <!-- ================= 直接代入模式 ================= -->
+      <div id="generateModeArea" style="display:none;">
+        <label>小剧场模板 / 剧情要求</label>
+        <textarea id="templateInput" placeholder="在此粘贴小剧场剧情模板（可以从上方模板模式生成后复制过来，也可填别人写的）..." style="min-height:110px;"></textarea>
 
-      <div class="btn-row">
-        <button class="btn" id="generateBtn">✦ 生成小剧场</button>
-        <button class="btn secondary" id="saveDraftBtn">保存草稿</button>
-        <button class="btn danger" id="clearInputBtn">清空输入</button>
-      </div>
+        <label>角色 A / char 人设</label>
+        <div class="file-box">
+          <b>导入 char 人设文档</b>
+          <input type="file" id="charAFile" accept=".txt,.docx,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+        </div>
+        <textarea id="charA" placeholder="粘贴或导入角色A / char 的人设、身份、性格等。"></textarea>
 
-      <div class="loading" id="generateLoading">
-        <div class="spinner"></div>
-        <span>正在生成小剧场……</span>
+        <label>角色 B / USER 人设</label>
+        <div class="file-box">
+          <b>导入 USER 人设文档</b>
+          <input type="file" id="charBFile" accept=".txt,.docx,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+        </div>
+        <textarea id="charB" placeholder="粘贴或导入角色B / USER 的人设、身份、性格等。"></textarea>
+
+        <div class="switch-line">
+          <div>
+            <b>结尾选项开关</b>
+            <span>开启后，正文结尾必须附带 A/B/C 选项。</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="directOptionToggle" />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn" id="generateTextBtn">✦ 生成初段正文</button>
+          <button class="btn secondary" id="saveDraftBtn">保存草稿</button>
+          <button class="btn danger" id="clearGenerateBtn">清空全部</button>
+        </div>
+
+        <div class="loading" id="generateLoading">
+          <div class="spinner"></div>
+          <span>正在调用 API 生成正文……</span>
+        </div>
       </div>
     </div>
 
+    <!-- 预设卡片 (仅在代入模式下显示) -->
+    <div class="card" id="presetArea" style="display:none; margin-top:0;">
+      <div class="section-title">
+        <h3>双人人设预设</h3>
+        <small>保存常用的A/B组合</small>
+      </div>
+      <div class="btn-row" style="margin-bottom:12px;">
+        <button class="btn secondary" id="saveCharPresetBtn">保存当前双人人设</button>
+      </div>
+      <div id="charPresetList" class="small-note">暂无双人人设预设。</div>
+    </div>
+
+    <!-- 结果输出框 -->
     <div class="output-box" id="outputBox">
-      <div class="empty">
-        还没有生成内容。<br>
-        填写人设和剧情后，点击右上角 ✦ 或“生成小剧场”。
+      <div class="empty">还没有生成内容。</div>
+    </div>
+
+    <!-- 续写控制面板 (仅在代入模式且有内容时显示) -->
+    <div class="card" id="directControls" style="display:none; margin-top:0;">
+      <div class="section-title">
+        <h3>剧情推进</h3>
+        <small>续写 / 断点 / 重Roll</small>
+      </div>
+      <label>续写走向 / 选项选择（可选填）</label>
+      <textarea id="continueInput" placeholder="例如：选择选项A，两人决定一起去游乐园..." style="min-height:60px;"></textarea>
+      
+      <div class="btn-row">
+        <button class="btn" id="continueBtn">✦ 续写</button>
+        <button class="btn secondary" id="breakpointBtn" title="如果文字没输出完，点这个无缝接续">断点继续</button>
+        <button class="btn ghost" id="rerollBtn">↻ 重Roll上段</button>
       </div>
     </div>
 
+    <!-- 导出 -->
     <div class="card">
       <div class="section-title">
-        <h2>导出</h2>
+        <h2>导出与处理</h2>
         <small>txt / doc / word</small>
       </div>
-
       <div class="btn-row">
         <button class="btn secondary" id="exportTxtBtn">导出 TXT</button>
         <button class="btn secondary" id="exportDocBtn">导出 Word .doc</button>
         <button class="btn secondary" id="exportDocxBtn">导出 DOCX</button>
         <button class="btn ghost" id="copyBtn">复制全文</button>
       </div>
-
-      <div class="small-note">
-        注：DOCX 为简易 Word 可打开格式；如果设备不兼容，可使用 Word .doc。
-      </div>
     </div>
   </section>
 
-  <!-- 历史 -->
+  <!-- ================= 历史 ================= -->
   <section class="panel" id="historyPanel">
     <div class="top-mini">
       <div class="top-main">
         <div>
-          <h1>历史小剧场</h1>
-          <p>IndexedDB 本地存储</p>
+          <h1>历史记录</h1>
+          <p>模板与正文互不干涉</p>
         </div>
         <button class="icon-btn" id="refreshHistoryBtn" title="刷新">↻</button>
+      </div>
+    </div>
+
+    <div class="card" style="padding-top:12px;">
+      <div class="mode-switch" style="margin-bottom:0;">
+        <button class="h-tab active" data-history-mode="template">模板记录</button>
+        <button class="h-tab" data-history-mode="generate">正文记录</button>
       </div>
     </div>
 
@@ -648,10 +744,9 @@ select:focus{
         <h2>本地记录</h2>
         <small>可读取 / 删除</small>
       </div>
-
       <div class="btn-row">
-        <button class="btn secondary" id="saveCurrentBtn">保存当前生成</button>
-        <button class="btn danger" id="clearHistoryBtn">清空历史</button>
+        <button class="btn secondary" id="saveCurrentBtn">保存当前面板记录</button>
+        <button class="btn danger" id="clearHistoryBtn">清空当前面板历史</button>
       </div>
     </div>
 
@@ -660,7 +755,7 @@ select:focus{
     </div>
   </section>
 
-  <!-- 设置 -->
+  <!-- ================= 设置 ================= -->
   <section class="panel" id="settingPanel">
     <div class="top-mini">
       <div class="top-main">
@@ -725,10 +820,6 @@ select:focus{
       </div>
 
       <input type="file" id="importDataFile" accept=".json,application/json" style="display:none;" />
-
-      <div class="small-note">
-        会导出 API 设置、草稿、历史小剧场和预设。
-      </div>
     </div>
   </section>
 </div>
@@ -747,20 +838,35 @@ const DB_VERSION = 1;
 const STORE_STATE = "state";
 const STORE_HISTORY = "history";
 
+// State
 const DEFAULT_STATE = {
-  sceneType:"普通番外",
-  customType:"",
-  charA:"",
-  charB:"",
-  plot:"",
-  nsfw:false,
-  withOptions:false,
-  output:"",
-  api:{
-    baseUrl:"",
-    apiKey:"",
-    model:"",
-    presets:[]
+  workMode: "template", // "template" 或 "generate"
+  historyMode: "template", 
+
+  // ================= 模板模式专属 =================
+  sceneType: "普通番外",
+  customType: "",
+  wordCount: "",
+  plot: "",
+  nsfw: false,
+  withOptions: false,
+  templateOutput: "", 
+  
+  // ================= 代入模式专属 =================
+  templateInput: "",
+  charA: "",
+  charB: "",
+  directOption: false,
+  storyBlocks: [], // 正文片段记录
+  generateOutput: "", 
+  
+  charPresets: [], // 双人预设 {id, name, charA, charB}
+
+  api: {
+    baseUrl: "",
+    apiKey: "",
+    model: "",
+    presets: []
   }
 };
 
@@ -805,53 +911,39 @@ function normalizeBaseUrl(url){
 
 async function readTextFile(file){
   const name = file.name.toLowerCase();
-
   if(name.endsWith(".docx")){
     if(typeof mammoth === "undefined"){
       throw new Error("docx 解析库未加载，请检查网络。");
     }
-
     const arrayBuffer = await file.arrayBuffer();
     const result = await mammoth.extractRawText({ arrayBuffer });
     return result.value || "";
   }
-
   return await file.text();
 }
 
-/* IndexedDB */
+/* ================= IndexedDB ================= */
 function openDB(){
   return new Promise((resolve,reject)=>{
     const req = indexedDB.open(DB_NAME, DB_VERSION);
-
     req.onupgradeneeded = e=>{
       const database = e.target.result;
-
       if(!database.objectStoreNames.contains(STORE_STATE)){
         database.createObjectStore(STORE_STATE, { keyPath:"id" });
       }
-
       if(!database.objectStoreNames.contains(STORE_HISTORY)){
         const store = database.createObjectStore(STORE_HISTORY, { keyPath:"id" });
         store.createIndex("createdAt", "createdAt", { unique:false });
       }
     };
-
-    req.onsuccess = e=>{
-      db = e.target.result;
-      resolve(db);
-    };
-
+    req.onsuccess = e=>{ db = e.target.result; resolve(db); };
     req.onerror = e=>reject(e.target.error);
   });
 }
 
 function dbPut(storeName, value){
   return new Promise((resolve,reject)=>{
-    const tx = db.transaction(storeName, "readwrite");
-    const store = tx.objectStore(storeName);
-    const req = store.put(value);
-
+    const req = db.transaction(storeName, "readwrite").objectStore(storeName).put(value);
     req.onsuccess = ()=>resolve(value);
     req.onerror = e=>reject(e.target.error);
   });
@@ -859,10 +951,7 @@ function dbPut(storeName, value){
 
 function dbGet(storeName, key){
   return new Promise((resolve,reject)=>{
-    const tx = db.transaction(storeName, "readonly");
-    const store = tx.objectStore(storeName);
-    const req = store.get(key);
-
+    const req = db.transaction(storeName, "readonly").objectStore(storeName).get(key);
     req.onsuccess = ()=>resolve(req.result);
     req.onerror = e=>reject(e.target.error);
   });
@@ -870,10 +959,7 @@ function dbGet(storeName, key){
 
 function dbGetAll(storeName){
   return new Promise((resolve,reject)=>{
-    const tx = db.transaction(storeName, "readonly");
-    const store = tx.objectStore(storeName);
-    const req = store.getAll();
-
+    const req = db.transaction(storeName, "readonly").objectStore(storeName).getAll();
     req.onsuccess = ()=>resolve(req.result || []);
     req.onerror = e=>reject(e.target.error);
   });
@@ -881,10 +967,7 @@ function dbGetAll(storeName){
 
 function dbDelete(storeName, key){
   return new Promise((resolve,reject)=>{
-    const tx = db.transaction(storeName, "readwrite");
-    const store = tx.objectStore(storeName);
-    const req = store.delete(key);
-
+    const req = db.transaction(storeName, "readwrite").objectStore(storeName).delete(key);
     req.onsuccess = ()=>resolve();
     req.onerror = e=>reject(e.target.error);
   });
@@ -892,10 +975,7 @@ function dbDelete(storeName, key){
 
 function dbClear(storeName){
   return new Promise((resolve,reject)=>{
-    const tx = db.transaction(storeName, "readwrite");
-    const store = tx.objectStore(storeName);
-    const req = store.clear();
-
+    const req = db.transaction(storeName, "readwrite").objectStore(storeName).clear();
     req.onsuccess = ()=>resolve();
     req.onerror = e=>reject(e.target.error);
   });
@@ -911,16 +991,26 @@ async function saveState(){
 
 async function loadState(){
   const item = await dbGet(STORE_STATE, "main");
-
   if(item && item.data){
-    state = Object.assign(clone(DEFAULT_STATE), item.data);
-    state.api = Object.assign(clone(DEFAULT_STATE.api), item.data.api || {});
+    const d = item.data;
+    state = Object.assign(clone(DEFAULT_STATE), d);
+    state.api = Object.assign(clone(DEFAULT_STATE.api), d.api || {});
+    if(!state.workMode) state.workMode = "template"; 
+    if(!state.historyMode) state.historyMode = "template"; 
+    if(!state.storyBlocks) state.storyBlocks = [];
+    if(!state.charPresets) state.charPresets = [];
+    
+    // 向下兼容旧的 output
+    if(d.output && !d.templateOutput && !d.generateOutput){
+      if(state.workMode === 'template') state.templateOutput = d.output;
+      else state.generateOutput = d.output;
+    }
   }else{
     state = clone(DEFAULT_STATE);
   }
 }
 
-/* API */
+/* ================= API 核心 ================= */
 async function callChatAPI(messages, options={}){
   const baseUrl = normalizeBaseUrl(state.api.baseUrl);
   const apiKey = state.api.apiKey.trim();
@@ -934,15 +1024,12 @@ async function callChatAPI(messages, options={}){
     model,
     messages,
     temperature: options.temperature ?? 0.85,
-    max_tokens: options.max_tokens ?? 5000
+    max_tokens: options.max_tokens ?? 8192
   };
 
   const res = await fetch(baseUrl + "/chat/completions", {
     method:"POST",
-    headers:{
-      "Content-Type":"application/json",
-      "Authorization":"Bearer " + apiKey
-    },
+    headers:{ "Content-Type":"application/json", "Authorization":"Bearer " + apiKey },
     body:JSON.stringify(body)
   });
 
@@ -950,12 +1037,12 @@ async function callChatAPI(messages, options={}){
     const txt = await res.text().catch(()=> "");
     throw new Error("API 请求失败：" + res.status + " " + txt.slice(0,300));
   }
-
   const data = await res.json();
   return data?.choices?.[0]?.message?.content ?? "";
 }
 
-/* tabs */
+/* ================= UI 更新与交互 ================= */
+// 大导航
 document.querySelectorAll(".tab").forEach(btn=>{
   btn.addEventListener("click", ()=>{
     document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
@@ -964,215 +1051,187 @@ document.querySelectorAll(".tab").forEach(btn=>{
     document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
     $(btn.dataset.tab).classList.add("active");
 
-    if(btn.dataset.tab === "historyPanel"){
-      renderHistory();
-    }
+    if(btn.dataset.tab === "historyPanel") renderHistory();
   });
 });
 
-/* templates */
-function getNormalTemplate(){
-  return `现在暂停剧情演绎，为我生成一个番外小剧场，不计入记忆区，不计入主线剧情，不需要状态栏，回复不少于8000字，不得OOC，严格按照两人的人设描写。剧情内容：`;
-}
+// 生成面板-模式切换
+document.querySelectorAll(".m-tab").forEach(btn => {
+  btn.addEventListener("click", async () => {
+    state.workMode = btn.dataset.mode;
+    fillForm();
+    await saveState();
+  });
+});
 
-function getNsfwTemplate(){
-  return `现在暂停剧情演绎，为我生成一个番外小剧场，标题自拟。要求成人向表达更直接，仅限成年人、合意、合法关系，不计入记忆区，不计入主线剧情，不需要状态栏，回复不少于8000字，不得OOC，严格按照两人的人设描写。剧情内容：`;
-}
+// 历史面板-模式切换
+document.querySelectorAll(".h-tab").forEach(btn => {
+  btn.addEventListener("click", () => {
+    state.historyMode = btn.dataset.historyMode;
+    document.querySelectorAll(".h-tab").forEach(b => {
+      b.classList.toggle("active", b.dataset.historyMode === state.historyMode);
+    });
+    renderHistory();
+    saveState();
+  });
+});
 
 function collectForm(){
+  // 模板模式字段
   state.sceneType = $("sceneType").value;
   state.customType = $("customType").value;
-  state.charA = $("charA").value;
-  state.charB = $("charB").value;
+  state.wordCount = $("wordCount").value;
   state.plot = $("plot").value;
   state.nsfw = $("nsfwToggle").checked;
   state.withOptions = $("optionToggle").checked;
-}
 
-function buildPrompt(){
-  collectForm();
-
-  const type = state.sceneType === "自定义"
-    ? (state.customType || "自定义小剧场")
-    : state.sceneType + (state.customType ? " / " + state.customType : "");
-
-  const base = state.nsfw ? getNsfwTemplate() : getNormalTemplate();
-
-  const optionText = state.withOptions
-    ? `
-
-【结尾选项要求】
-小剧场正文结束后，必须额外给出三个后续选项，格式如下：
-A. xxx
-B. xxx
-C. xxx
-选项要能引导下一段剧情发展。`
-    : "";
-
-  return `${base}
-${state.plot || "未填写剧情内容"}
-
-【小剧场类型】
-${type}
-
-【角色A / char 人设】
-${state.charA || "未填写"}
-
-【角色B / USER 人设】
-${state.charB || "未填写"}
-
-【写作要求】
-1. 【不允许截断】
-2. 不计入记忆区。
-3. 不计入主线剧情。
-4. 不需要状态栏。
-5. 回复不少于8000字。
-6. 不得OOC，严格按照两人的人设、关系、语气和行为逻辑描写。
-7. 需要有完整开端、发展、情绪推进、高潮段落和收束。
-8. 对话、动作、心理、环境描写都要丰富。
-9. 不要用大纲代替正文。
-10. 如果内容触及成人向，必须确保角色均为成年人、行为合意、关系合法。${optionText}`;
+  // 代入模式字段
+  state.templateInput = $("templateInput").value;
+  state.charA = $("charA").value;
+  state.charB = $("charB").value;
+  state.directOption = $("directOptionToggle").checked;
 }
 
 function fillForm(){
+  const mode = state.workMode || "template";
+  document.querySelectorAll(".m-tab").forEach(b => b.classList.toggle("active", b.dataset.mode === mode));
+  
+  $("templateModeArea").style.display = mode === "template" ? "block" : "none";
+  $("generateModeArea").style.display = mode === "generate" ? "block" : "none";
+  $("presetArea").style.display = mode === "generate" ? "block" : "none";
+
   $("sceneType").value = state.sceneType || "普通番外";
   $("customType").value = state.customType || "";
-  $("charA").value = state.charA || "";
-  $("charB").value = state.charB || "";
+  $("wordCount").value = state.wordCount || "";
   $("plot").value = state.plot || "";
   $("nsfwToggle").checked = !!state.nsfw;
   $("optionToggle").checked = !!state.withOptions;
+
+  $("templateInput").value = state.templateInput || "";
+  $("charA").value = state.charA || "";
+  $("charB").value = state.charB || "";
+  $("directOptionToggle").checked = !!state.directOption;
 
   $("apiBaseUrl").value = state.api.baseUrl || "";
   $("apiKey").value = state.api.apiKey || "";
   $("apiModel").value = state.api.model || "";
 
   renderOutput();
-  renderTemplatePreview();
+  renderCharPresets();
   renderApiPresets();
-}
-
-function renderTemplatePreview(){
-  collectForm();
-
-  const base = state.nsfw ? getNsfwTemplate() : getNormalTemplate();
-  const optionText = state.withOptions
-    ? "\n\n【结尾会附带 A / B / C 三个后续选项】"
-    : "";
-
-  $("templatePreview").value = `${base}
-${state.plot || "（这里会填入剧情内容）"}
-【不允许截断】${optionText}`;
 }
 
 function renderOutput(){
   const box = $("outputBox");
-
-  if(!state.output){
-    box.innerHTML = `
-      <div class="empty">
-        还没有生成内容。<br>
-        填写人设和剧情后，点击右上角 ✦ 或“生成小剧场”。
-      </div>
-    `;
-    return;
+  let outText = state.workMode === 'template' ? state.templateOutput : state.generateOutput;
+  
+  if(!outText){
+    box.innerHTML = `<div class="empty">还没有生成内容。<br>完成配置后，点击 ✦ 按钮。</div>`;
+  } else {
+    box.textContent = outText;
   }
-
-  box.textContent = state.output;
+  
+  const showControls = state.workMode === 'generate' && state.storyBlocks && state.storyBlocks.length > 0;
+  $("directControls").style.display = showControls ? "block" : "none";
 }
 
-/* form auto save */
-["sceneType","customType","charA","charB","plot","nsfwToggle","optionToggle"].forEach(id=>{
-  $(id).addEventListener("input", async ()=>{
-    collectForm();
-    renderTemplatePreview();
-    await saveState();
-  });
-
-  $(id).addEventListener("change", async ()=>{
-    collectForm();
-    renderTemplatePreview();
-    await saveState();
-  });
+/* 自动保存 */
+["sceneType","customType","wordCount","plot","nsfwToggle","optionToggle","templateInput","charA","charB","directOptionToggle"].forEach(id=>{
+  $(id).addEventListener("input", async ()=>{ collectForm(); await saveState(); });
+  $(id).addEventListener("change", async ()=>{ collectForm(); await saveState(); });
 });
 
-/* import char/user */
-$("charAFile").addEventListener("change", async e=>{
-  const file = e.target.files?.[0];
-  if(!file) return;
-
-  try{
-    const text = await readTextFile(file);
-    $("charA").value = text;
-    state.charA = text;
-
-    collectForm();
-    renderTemplatePreview();
-    await saveState();
-
-    toast("char 人设导入成功");
-  }catch(err){
-    console.error(err);
-    toast(err.message || "char 人设导入失败");
-  }finally{
-    e.target.value = "";
-  }
-});
-
-$("charBFile").addEventListener("change", async e=>{
-  const file = e.target.files?.[0];
-  if(!file) return;
-
-  try{
-    const text = await readTextFile(file);
-    $("charB").value = text;
-    state.charB = text;
-
-    collectForm();
-    renderTemplatePreview();
-    await saveState();
-
-    toast("USER 人设导入成功");
-  }catch(err){
-    console.error(err);
-    toast(err.message || "USER 人设导入失败");
-  }finally{
-    e.target.value = "";
-  }
-});
-
-/* generate */
-async function generateScene(){
+/* ================= 模板模式: 调用AI扩写 ================= */
+$("buildTemplateBtn").addEventListener("click", async () => {
   collectForm();
+  
+  const type = state.sceneType === "自定义" ? (state.customType || "自定义类型") : state.sceneType + (state.customType ? " / " + state.customType : "");
+  const wordLimit = state.wordCount ? `回复不少于${state.wordCount}字` : "字数无上限";
+  const nsfwText = state.nsfw ? "成人向表达更直接，仅限成年人、合意、合法关系，" : "";
+  const optText = state.withOptions ? "\n\n【结尾选项要求】\n小剧场正文结束后，请必须额外给出三个后续选项，格式如下：\nA. xxx\nB. xxx\nC. xxx\n选项要能引导下一段剧情发展。" : "";
 
-  if(!state.plot.trim()){
-    return toast("请先填写剧情内容");
-  }
+  const promptMsg = `你是一个小剧场 Prompt 专家。用户提供了一些短小的情节设定，请你帮用户扩写、润色，生成一段结构完整、可以直接发给大语言模型的“小剧场剧情指令模板”。
 
-  setLoading("generateLoading", true);
+用户给定的要求如下：
+- 小剧场类型：${type}
+- 字数要求：${wordLimit}
+- 剧情灵感：${state.plot || "请帮我随机构思一个符合该类型设定的精彩小剧场"}
+- 额外限制：${nsfwText}不计入记忆区，不计入主线剧情，不需要状态栏，不得OOC，严格按照两人的人设描写。
 
+任务：
+请参考下方格式，发挥你的创意，将用户的“剧情灵感”扩写成一段200字左右的详细情境描写（明确场景细节、前置条件、双方心理预期等，让生成的剧情更有张力）。
+【注意：你只用输出包含在【】内的最终模板，不需要多余的解释。】
+
+参考格式：
+【现在暂停剧情演绎，为我生成一个番外小剧场，标题自拟。要求内容符合${type}，${nsfwText}不计入记忆区，不计入主线剧情，不需要状态栏，${wordLimit}，不得OOC，严格按照两人的人设描写。剧情内容：(这里放你扩写后的详细剧情指令)...】${optText}`;
+
+  setLoading("templateLoading", true);
   try{
-    const prompt = buildPrompt();
+    const res = await callChatAPI([
+      {role: "system", content: "你是一位经验丰富的Prompt撰写者，擅长把简短的点子扩写成细节丰富的剧情指令。"},
+      {role: "user", content: promptMsg}
+    ], { temperature: 0.8 });
 
-    const content = await callChatAPI([
-      {
-        role:"system",
-        content:"你是小剧场番外写作助手，擅长按照给定人设生成完整番外正文。必须遵守用户给定的人设、关系和剧情要求，不要写成大纲。"
-      },
-      {
-        role:"user",
-        content:prompt
-      }
-    ], {
-      temperature:0.85,
-      max_tokens:7000
-    });
-
-    state.output = content.trim();
+    state.templateOutput = res.trim();
     await saveState();
     renderOutput();
     await saveHistory(true);
-    toast("小剧场生成完成");
+    toast("模板已通过 AI 扩写完成");
+  }catch(err){
+    console.error(err);
+    toast(err.message || "生成失败");
+  }finally{
+    setLoading("templateLoading", false);
+  }
+});
+
+$("clearTemplateBtn").addEventListener("click", async () => {
+  if(!confirm("确定清空模板配置？生成结果不会清空。")) return;
+  state.sceneType = "普通番外";
+  state.customType = "";
+  state.wordCount = "";
+  state.plot = "";
+  state.nsfw = false;
+  state.withOptions = false;
+  fillForm();
+  await saveState();
+  toast("已清空");
+});
+
+/* ================= 代入模式: 连贯正文生成 ================= */
+function recomputeGenerateOutput() {
+  let text = "";
+  for(let i=0; i<state.storyBlocks.length; i++){
+    const b = state.storyBlocks[i];
+    if(i === 0) text = b.responseText;
+    else text += b.isBreakpoint ? b.responseText.trimStart() : "\n\n" + b.responseText;
+  }
+  state.generateOutput = text;
+}
+
+async function executeApiCall(promptMsg, isBreakpoint, isFirst, isReroll = false) {
+  setLoading("generateLoading", true);
+  try{
+    const blocksToSend = isReroll ? state.storyBlocks.slice(0, -1) : state.storyBlocks;
+    
+    const msgs = [{ role: "system", content: "你是小剧场番外写作助手，擅长按照给定人设和剧情要求生成完整正文。遵守给定的所有人设细节、关系、剧情发展要求，禁止OOC，直接输出正文，不允许截断。" }];
+    for(let b of blocksToSend){
+      msgs.push(b.promptMsg);
+      msgs.push({ role: "assistant", content: b.responseText });
+    }
+    msgs.push(promptMsg);
+    
+    const res = await callChatAPI(msgs, { temperature: 0.85, max_tokens: 8192 });
+    
+    const newBlock = { promptMsg: promptMsg, responseText: res.trimEnd(), isBreakpoint: isBreakpoint };
+    if (isReroll) state.storyBlocks[state.storyBlocks.length - 1] = newBlock;
+    else state.storyBlocks.push(newBlock);
+
+    recomputeGenerateOutput();
+    await saveState();
+    renderOutput();
+    toast(isReroll ? "重Roll成功" : (isFirst ? "初段正文生成完成" : "续写完成"));
+    if(isFirst) await saveHistory(true);
   }catch(err){
     console.error(err);
     toast(err.message || "生成失败");
@@ -1181,89 +1240,201 @@ async function generateScene(){
   }
 }
 
-$("generateBtn").addEventListener("click", generateScene);
-$("quickGenerateBtn").addEventListener("click", generateScene);
-
-$("saveDraftBtn").addEventListener("click", async ()=>{
+$("generateTextBtn").addEventListener("click", async () => {
   collectForm();
-  await saveState();
-  toast("草稿已保存");
+  if(!state.templateInput.trim()) return toast("请先填写小剧场模板 / 剧情要求");
+  
+  let promptText = `【小剧场剧情要求】\n${state.templateInput}\n\n【角色 A / char 人设】\n${state.charA || "未填写"}\n\n【角色 B / USER 人设】\n${state.charB || "未填写"}\n\n【写作要求】\n请根据以上人设，严格按照【小剧场剧情要求】中的字数、设定进行创作。直接输出正文内容，不要输出大纲，不截断。`;
+  
+  if (state.directOption) promptText += `\n\n【结尾选项要求】\n正文结束后，请必须额外给出三个后续选项，格式如下：\nA. xxx\nB. xxx\nC. xxx`;
+
+  state.storyBlocks = []; // 重置
+  const promptMsg = { role: 'user', content: promptText };
+  await executeApiCall(promptMsg, false, true);
 });
 
-$("clearInputBtn").addEventListener("click", async ()=>{
-  if(!confirm("确定清空输入内容？生成结果不会清空。")) return;
+$("continueBtn").addEventListener("click", async () => {
+  if(!state.storyBlocks.length) return toast("请先生成初段正文");
+  const userInput = $("continueInput").value.trim();
+  
+  let promptText = "请继续顺着上文续写。";
+  if(userInput) promptText += `\n剧情走向/选择要求：${userInput}。`;
+  if(state.directOption) promptText += `\n请在本次输出结尾附带三个后续发展选项(A/B/C)。`;
+  promptText += "\n直接输出后续正文内容，不要重复上文，不要截断。";
 
-  state.sceneType = "普通番外";
-  state.customType = "";
+  await executeApiCall({ role: 'user', content: promptText }, false, false);
+  $("continueInput").value = "";
+});
+
+$("breakpointBtn").addEventListener("click", async () => {
+  if(!state.storyBlocks.length) return toast("请先生成初段正文");
+  const promptMsg = { role: 'user', content: "由于字数限制，上文被截断了。请从上文最后一个字直接无缝断点续写，不要重复前面任何内容，不要有开头寒暄，直接接续输出。" };
+  await executeApiCall(promptMsg, true, false);
+});
+
+$("rerollBtn").addEventListener("click", async () => {
+  if(!state.storyBlocks.length) return toast("没有可重Roll的内容");
+  const lastBlock = state.storyBlocks[state.storyBlocks.length - 1];
+  await executeApiCall(lastBlock.promptMsg, lastBlock.isBreakpoint, false, true);
+});
+
+$("clearGenerateBtn").addEventListener("click", async () => {
+  if(!confirm("确定清空代入模式所有输入和生成的正文？")) return;
+  state.templateInput = "";
   state.charA = "";
   state.charB = "";
-  state.plot = "";
-  state.nsfw = false;
-  state.withOptions = false;
-
-  await saveState();
+  state.storyBlocks = [];
+  state.generateOutput = "";
   fillForm();
-  toast("已清空输入");
+  await saveState();
+  toast("已清空");
 });
 
-/* history */
-async function saveHistory(silent){
-  if(!state.output.trim()){
-    if(!silent) toast("当前没有生成内容可保存");
+/* 全局快捷按钮 */
+$("quickGenerateBtn").addEventListener("click", () => {
+  if(state.workMode === "template") $("buildTemplateBtn").click();
+  else $("generateTextBtn").click();
+});
+$("saveDraftBtn").addEventListener("click", async ()=>{
+  collectForm(); await saveState(); toast("草稿已保存");
+});
+
+/* 人设双人预设管理 */
+$("saveCharPresetBtn").addEventListener("click", async () => {
+  const cA = $("charA").value.trim();
+  const cB = $("charB").value.trim();
+  if(!cA && !cB) return toast("当前人设为空");
+  
+  const name = prompt("给这对双人预设取个名字：", "未命名CP") || "未命名CP";
+  state.charPresets.unshift({ id: uid('cp'), name, charA: cA, charB: cB });
+  await saveState();
+  renderCharPresets();
+  toast("双人人设已保存");
+});
+
+function renderCharPresets() {
+  const box = $("charPresetList");
+  const presets = state.charPresets || [];
+  if(!presets.length){
+    box.innerHTML = "暂无双人人设预设。";
     return;
   }
+  box.innerHTML = presets.map((p, i) => `
+    <div class="preset-item" style="padding:10px 0;">
+      <div class="preset-title">${escapeHtml(p.name)}</div>
+      <div class="preset-desc">包含 Char / User 人设数据</div>
+      <div class="btn-row" style="margin-top:6px;">
+        <button class="btn secondary" data-use-cp="${i}">使用</button>
+        <button class="btn danger" data-del-cp="${i}">删除</button>
+      </div>
+    </div>
+  `).join("");
+
+  document.querySelectorAll("[data-use-cp]").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const p = state.charPresets[Number(btn.dataset.useCp)];
+      if(!p) return;
+      state.charA = p.charA || "";
+      state.charB = p.charB || "";
+      fillForm();
+      await saveState();
+      toast("已代入双人人设");
+    });
+  });
+
+  document.querySelectorAll("[data-del-cp]").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      if(!confirm("确定删除这个预设？")) return;
+      state.charPresets.splice(Number(btn.dataset.delCp), 1);
+      await saveState();
+      renderCharPresets();
+    });
+  });
+}
+
+/* 文件导入 (代入模式) */
+async function handleFileImport(e, targetField) {
+  const file = e.target.files?.[0];
+  if(!file) return;
+  try{
+    const text = await readTextFile(file);
+    $(targetField).value = text;
+    state[targetField] = text;
+    collectForm();
+    await saveState();
+    toast("人设导入成功");
+  }catch(err){
+    console.error(err);
+    toast(err.message || "导入失败");
+  }finally{
+    e.target.value = "";
+  }
+}
+$("charAFile").addEventListener("change", e => handleFileImport(e, "charA"));
+$("charBFile").addEventListener("change", e => handleFileImport(e, "charB"));
+
+/* ================= 彻底分离的历史记录 ================= */
+$("refreshHistoryBtn").addEventListener("click", renderHistory);
+
+function getCurrentOutputText() {
+  return state.workMode === 'template' ? state.templateOutput : state.generateOutput;
+}
+
+$("saveCurrentBtn").addEventListener("click", async () => {
+  const text = getCurrentOutputText();
+  if(!text || !text.trim()) return toast("当前没有内容可保存");
+
+  const isTemplate = state.workMode === "template";
+  const title = isTemplate ? `[模板] ${state.sceneType}` : `[正文] ${(state.templateInput || "未命名").replace(/\s+/g,"").slice(0,18)}`;
 
   const item = {
-    id:uid("scene"),
-    title:makeTitle(),
-    sceneType:state.sceneType,
-    customType:state.customType,
-    nsfw:state.nsfw,
-    withOptions:state.withOptions,
-    charA:state.charA,
-    charB:state.charB,
-    plot:state.plot,
-    output:state.output,
-    createdAt:Date.now(),
-    time:new Date().toLocaleString()
+    id: uid("scene"),
+    workMode: state.workMode,
+    title: title,
+    createdAt: Date.now(),
+    time: new Date().toLocaleString(),
+    // 基础数据
+    sceneType: state.sceneType, customType: state.customType,
+    wordCount: state.wordCount, nsfw: state.nsfw, withOptions: state.withOptions,
+    // 对应模式的专用数据
+    plot: isTemplate ? state.plot : "",
+    output: text,
+    templateInput: isTemplate ? "" : state.templateInput,
+    charA: isTemplate ? "" : state.charA,
+    charB: isTemplate ? "" : state.charB,
+    directOption: isTemplate ? false : state.directOption,
+    storyBlocks: isTemplate ? [] : state.storyBlocks
   };
 
   await dbPut(STORE_HISTORY, item);
-
-  if(!silent){
-    toast("已保存到历史");
-    renderHistory();
-  }
-}
-
-function makeTitle(){
-  const type = state.sceneType || "小剧场";
-  const plot = (state.plot || "").replace(/\s+/g,"").slice(0,18);
-  return `【${type}】${plot || "未命名小剧场"}`;
-}
-
-$("saveCurrentBtn").addEventListener("click", ()=>saveHistory(false));
-$("refreshHistoryBtn").addEventListener("click", renderHistory);
+  toast("已保存当前面板到历史");
+  
+  // 自动跳到对应历史Tab刷新
+  state.historyMode = state.workMode;
+  document.querySelectorAll(".h-tab").forEach(b => b.classList.toggle("active", b.dataset.historyMode === state.historyMode));
+  renderHistory();
+});
 
 async function renderHistory(){
-  const list = await dbGetAll(STORE_HISTORY);
-  list.sort((a,b)=>(b.createdAt || 0) - (a.createdAt || 0));
+  let list = await dbGetAll(STORE_HISTORY);
+  // 严格过滤：根据当前在模板/正文 Tab，只显示该类别
+  list = list.filter(item => item.workMode === state.historyMode);
+  list.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
 
   const box = $("historyList");
-
   if(!list.length){
-    box.innerHTML = `<div class="empty">暂无历史记录。</div>`;
+    box.innerHTML = `<div class="empty">该分类下暂无历史记录。</div>`;
     return;
   }
 
-  box.innerHTML = list.map(item=>`
+  box.innerHTML = list.map(item => `
     <article class="list-item" data-load-history="${escapeHtml(item.id)}">
-      <div class="list-title">${escapeHtml(item.title || "未命名小剧场")}</div>
+      <div class="list-title">${escapeHtml(item.title || "未命名记录")}</div>
       <div class="list-preview">${escapeHtml(item.output || "")}</div>
       <div class="meta">
-        <span class="tag">${escapeHtml(item.sceneType || "小剧场")}</span>
+        ${item.sceneType && item.workMode === 'template' ? `<span class="tag">${escapeHtml(item.sceneType)}</span>` : ""}
         ${item.nsfw ? `<span class="tag">NSFW</span>` : ""}
-        ${item.withOptions ? `<span class="tag">带选项</span>` : ""}
+        ${item.withOptions || item.directOption ? `<span class="tag">带选项</span>` : ""}
         <span>${escapeHtml(item.time || "")}</span>
       </div>
       <div class="btn-row">
@@ -1273,43 +1444,36 @@ async function renderHistory(){
     </article>
   `).join("");
 
-  document.querySelectorAll("[data-load-history]").forEach(el=>{
-    el.addEventListener("click", ()=>{
-      loadHistory(el.dataset.loadHistory);
-    });
-  });
-
-  document.querySelectorAll("[data-use-history]").forEach(btn=>{
-    btn.addEventListener("click", e=>{
-      e.stopPropagation();
-      loadHistory(btn.dataset.useHistory);
-    });
-  });
-
-  document.querySelectorAll("[data-del-history]").forEach(btn=>{
-    btn.addEventListener("click", e=>{
-      e.stopPropagation();
-      deleteHistory(btn.dataset.delHistory);
-    });
-  });
+  document.querySelectorAll("[data-load-history]").forEach(el => el.addEventListener("click", () => loadHistory(el.dataset.loadHistory)));
+  document.querySelectorAll("[data-use-history]").forEach(btn => btn.addEventListener("click", e => { e.stopPropagation(); loadHistory(btn.dataset.useHistory); }));
+  document.querySelectorAll("[data-del-history]").forEach(btn => btn.addEventListener("click", e => { e.stopPropagation(); deleteHistory(btn.dataset.delHistory); }));
 }
 
 async function loadHistory(id){
   const item = await dbGet(STORE_HISTORY, id);
   if(!item) return;
 
-  state.sceneType = item.sceneType || "普通番外";
-  state.customType = item.customType || "";
-  state.nsfw = !!item.nsfw;
-  state.withOptions = !!item.withOptions;
-  state.charA = item.charA || "";
-  state.charB = item.charB || "";
-  state.plot = item.plot || "";
-  state.output = item.output || "";
+  state.workMode = item.workMode || "template";
+  
+  if(state.workMode === 'template'){
+    state.sceneType = item.sceneType || "普通番外";
+    state.customType = item.customType || "";
+    state.wordCount = item.wordCount || "";
+    state.plot = item.plot || "";
+    state.nsfw = !!item.nsfw;
+    state.withOptions = !!item.withOptions;
+    state.templateOutput = item.output || "";
+  } else {
+    state.templateInput = item.templateInput || "";
+    state.charA = item.charA || "";
+    state.charB = item.charB || "";
+    state.directOption = !!item.directOption;
+    state.storyBlocks = item.storyBlocks || [];
+    state.generateOutput = item.output || "";
+  }
 
   await saveState();
   fillForm();
-
   document.querySelector('[data-tab="createPanel"]').click();
   toast("已读取历史");
 }
@@ -1322,337 +1486,141 @@ async function deleteHistory(id){
 }
 
 $("clearHistoryBtn").addEventListener("click", async ()=>{
-  if(!confirm("确定清空全部历史小剧场？")) return;
-  await dbClear(STORE_HISTORY);
+  if(!confirm(`确定清空全部【${state.historyMode === 'template' ? '模板' : '正文'}】历史记录？`)) return;
+  const list = await dbGetAll(STORE_HISTORY);
+  for(let item of list){
+    if(item.workMode === state.historyMode) await dbDelete(STORE_HISTORY, item.id);
+  }
   await renderHistory();
-  toast("历史已清空");
+  toast("已清空该分类历史");
 });
 
-/* export */
+/* ================= 导出与处理 ================= */
 function getOutputOrToast(){
-  if(!state.output || !state.output.trim()){
-    toast("还没有生成内容");
-    return "";
-  }
-  return state.output;
+  const text = getCurrentOutputText();
+  if(!text || !text.trim()){ toast("还没有生成内容"); return ""; }
+  return text;
 }
-
 function downloadBlob(blob, filename){
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  a.click();
+  a.href = url; a.download = filename; a.click();
   URL.revokeObjectURL(url);
 }
-
-function safeFileName(name){
-  return String(name || "小剧场")
-    .replace(/[\\/:*?"<>|]/g,"_")
-    .slice(0,60);
+function safeFileName(){
+  const base = state.workMode === "template" ? (state.sceneType || "模板") : ((state.templateInput||"").slice(0,8) || "正文");
+  return String(base).replace(/[\\/:*?"<>|]/g,"_").slice(0,60);
 }
 
 $("exportTxtBtn").addEventListener("click", ()=>{
-  const text = getOutputOrToast();
-  if(!text) return;
-
-  const filename = safeFileName(makeTitle()) + ".txt";
-  const blob = new Blob([text], {type:"text/plain;charset=utf-8"});
-  downloadBlob(blob, filename);
+  const text = getOutputOrToast(); if(!text) return;
+  downloadBlob(new Blob([text], {type:"text/plain;charset=utf-8"}), safeFileName() + ".txt");
 });
-
 $("exportDocBtn").addEventListener("click", ()=>{
-  const text = getOutputOrToast();
-  if(!text) return;
-
-  const html = `
-<html>
-<head>
-<meta charset="UTF-8">
-<title>${escapeHtml(makeTitle())}</title>
-<style>
-body{font-family:"Microsoft YaHei",Arial,sans-serif;line-height:1.8;font-size:14pt;}
-pre{white-space:pre-wrap;font-family:inherit;}
-</style>
-</head>
-<body>
-<h1>${escapeHtml(makeTitle())}</h1>
-<pre>${escapeHtml(text)}</pre>
-</body>
-</html>`;
-
-  const filename = safeFileName(makeTitle()) + ".doc";
-  const blob = new Blob(["\ufeff", html], {type:"application/msword;charset=utf-8"});
-  downloadBlob(blob, filename);
+  const text = getOutputOrToast(); if(!text) return;
+  const html = `<html><head><meta charset="UTF-8"><style>body{font-family:"Microsoft YaHei",sans-serif;line-height:1.8;font-size:14pt;}pre{white-space:pre-wrap;font-family:inherit;}</style></head><body><pre>${escapeHtml(text)}</pre></body></html>`;
+  downloadBlob(new Blob(["\ufeff", html], {type:"application/msword;charset=utf-8"}), safeFileName() + ".doc");
 });
-
 $("exportDocxBtn").addEventListener("click", ()=>{
-  const text = getOutputOrToast();
-  if(!text) return;
-
-  const html = `
-<html xmlns:o="urn:schemas-microsoft-com:office:office"
-      xmlns:w="urn:schemas-microsoft-com:office:word"
-      xmlns="http://www.w3.org/TR/REC-html40">
-<head>
-<meta charset="UTF-8">
-<title>${escapeHtml(makeTitle())}</title>
-<style>
-body{font-family:"Microsoft YaHei",Arial,sans-serif;line-height:1.8;font-size:14pt;}
-pre{white-space:pre-wrap;font-family:inherit;}
-</style>
-</head>
-<body>
-<h1>${escapeHtml(makeTitle())}</h1>
-<pre>${escapeHtml(text)}</pre>
-</body>
-</html>`;
-
-  const filename = safeFileName(makeTitle()) + ".docx";
-  const blob = new Blob(["\ufeff", html], {
-    type:"application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8"
-  });
-  downloadBlob(blob, filename);
+  const text = getOutputOrToast(); if(!text) return;
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><style>body{font-family:"Microsoft YaHei",sans-serif;line-height:1.8;font-size:14pt;}pre{white-space:pre-wrap;font-family:inherit;}</style></head><body><pre>${escapeHtml(text)}</pre></body></html>`;
+  downloadBlob(new Blob(["\ufeff", html], {type:"application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8"}), safeFileName() + ".docx");
 });
-
 $("copyBtn").addEventListener("click", async ()=>{
-  const text = getOutputOrToast();
-  if(!text) return;
-
-  try{
-    await navigator.clipboard.writeText(text);
-    toast("已复制全文");
-  }catch(e){
-    toast("复制失败，可手动选中文本复制");
-  }
+  const text = getOutputOrToast(); if(!text) return;
+  try{ await navigator.clipboard.writeText(text); toast("已复制全文"); }
+  catch(e){ toast("复制失败，可手动选中文本复制"); }
 });
 
-/* API */
+/* ================= API设置 / 预设 ================= */
 $("saveApiBtn").addEventListener("click", async ()=>{
   state.api.baseUrl = normalizeBaseUrl($("apiBaseUrl").value);
   state.api.apiKey = $("apiKey").value.trim();
   state.api.model = $("apiModel").value.trim();
-
-  await saveState();
-  renderApiPresets();
-  toast("API 已保存");
+  await saveState(); renderApiPresets(); toast("API 已保存");
 });
-
 $("modelSelect").addEventListener("change", async e=>{
-  if(e.target.value){
-    $("apiModel").value = e.target.value;
-    state.api.model = e.target.value;
-    await saveState();
-  }
+  if(e.target.value){ $("apiModel").value = e.target.value; state.api.model = e.target.value; await saveState(); }
 });
-
 $("fetchModelsBtn").addEventListener("click", async ()=>{
   state.api.baseUrl = normalizeBaseUrl($("apiBaseUrl").value);
   state.api.apiKey = $("apiKey").value.trim();
   await saveState();
-
-  const baseUrl = state.api.baseUrl;
-  const apiKey = state.api.apiKey;
-
-  if(!baseUrl || !apiKey){
-    return toast("请先填写 Base URL 和 API Key");
-  }
-
+  if(!state.api.baseUrl || !state.api.apiKey) return toast("请先填写 Base URL 和 API Key");
   $("apiStatus").textContent = "正在拉取模型……";
-
   try{
-    const res = await fetch(baseUrl + "/models", {
-      headers:{ "Authorization":"Bearer " + apiKey }
-    });
-
-    if(!res.ok){
-      const txt = await res.text().catch(()=> "");
-      throw new Error(res.status + " " + txt.slice(0,200));
-    }
-
-    const data = await res.json();
-    const models = (data.data || []).map(m=>m.id).filter(Boolean);
-
-    $("modelSelect").innerHTML = models.length
-      ? models.map(id=>`<option value="${escapeHtml(id)}">${escapeHtml(id)}</option>`).join("")
-      : `<option value="">没有模型数据</option>`;
-
-    if(models.length){
-      state.api.model = models[0];
-      $("apiModel").value = models[0];
-      await saveState();
-    }
-
+    const res = await fetch(state.api.baseUrl + "/models", { headers:{ "Authorization":"Bearer " + state.api.apiKey }});
+    if(!res.ok) throw new Error(res.status + " " + (await res.text()).slice(0,200));
+    const models = ((await res.json()).data || []).map(m=>m.id).filter(Boolean);
+    $("modelSelect").innerHTML = models.length ? models.map(id=>`<option value="${escapeHtml(id)}">${escapeHtml(id)}</option>`).join("") : `<option value="">没有模型数据</option>`;
+    if(models.length){ state.api.model = models[0]; $("apiModel").value = models[0]; await saveState(); }
     $("apiStatus").textContent = "模型拉取成功，共 " + models.length + " 个。";
     toast("模型拉取成功");
-  }catch(err){
-    console.error(err);
-    $("apiStatus").textContent = "模型拉取失败：" + err.message;
-    toast("拉取失败");
-  }
+  }catch(err){ $("apiStatus").textContent = "模型拉取失败：" + err.message; toast("拉取失败"); }
 });
-
 $("testApiBtn").addEventListener("click", async ()=>{
   state.api.baseUrl = normalizeBaseUrl($("apiBaseUrl").value);
   state.api.apiKey = $("apiKey").value.trim();
   state.api.model = $("apiModel").value.trim();
   await saveState();
-
   $("apiStatus").textContent = "正在测试 API……";
-
   try{
-    const content = await callChatAPI([
-      {role:"system",content:"你是测试助手。"},
-      {role:"user",content:"请只回复：连接成功"}
-    ], {
-      temperature:0.1,
-      max_tokens:30
-    });
-
-    $("apiStatus").textContent = "测试成功：" + content.trim();
-    toast("API 测试成功");
-  }catch(err){
-    console.error(err);
-    $("apiStatus").textContent = "测试失败：" + err.message;
-    toast("测试失败");
-  }
+    const content = await callChatAPI([{role:"user",content:"请只回复：连接成功"}], {temperature:0.1, max_tokens:30});
+    $("apiStatus").textContent = "测试成功：" + content.trim(); toast("API 测试成功");
+  }catch(err){ $("apiStatus").textContent = "测试失败：" + err.message; toast("测试失败"); }
 });
-
 $("saveApiPresetBtn").addEventListener("click", async ()=>{
-  const baseUrl = normalizeBaseUrl($("apiBaseUrl").value);
-  const apiKey = $("apiKey").value.trim();
-  const model = $("apiModel").value.trim();
-
-  if(!baseUrl || !apiKey || !model){
-    return toast("请先填写完整 API");
-  }
-
-  const name = prompt("API 预设名称：", model) || model;
-
-  state.api.baseUrl = baseUrl;
-  state.api.apiKey = apiKey;
-  state.api.model = model;
-  state.api.presets.unshift({name,baseUrl,apiKey,model});
-
-  await saveState();
-  renderApiPresets();
-  toast("API 预设已保存");
+  if(!state.api.baseUrl || !state.api.apiKey || !state.api.model) return toast("请先填写完整 API");
+  const name = prompt("API 预设名称：", state.api.model) || state.api.model;
+  state.api.presets.unshift({name, baseUrl:state.api.baseUrl, apiKey:state.api.apiKey, model:state.api.model});
+  await saveState(); renderApiPresets(); toast("API 预设已保存");
 });
-
 function renderApiPresets(){
-  const box = $("apiPresetList");
-  const presets = state.api.presets || [];
-
-  if(!presets.length){
-    box.innerHTML = "暂无 API 预设。";
-    return;
-  }
-
-  box.innerHTML = presets.map((p,i)=>`
-    <div class="preset-item">
-      <div class="preset-title">${escapeHtml(p.name || "未命名预设")}</div>
-      <div class="preset-desc">${escapeHtml((p.baseUrl || "") + "\\n" + (p.model || ""))}</div>
-      <div class="btn-row">
-        <button class="btn secondary" data-use-api="${i}">使用</button>
-        <button class="btn danger" data-del-api="${i}">删除</button>
-      </div>
-    </div>
-  `).join("");
-
-  document.querySelectorAll("[data-use-api]").forEach(btn=>{
-    btn.addEventListener("click", async ()=>{
-      const p = state.api.presets[Number(btn.dataset.useApi)];
-      if(!p) return;
-
-      state.api.baseUrl = p.baseUrl;
-      state.api.apiKey = p.apiKey;
-      state.api.model = p.model;
-
-      await saveState();
-      fillForm();
-      toast("已切换 API 预设");
-    });
-  });
-
-  document.querySelectorAll("[data-del-api]").forEach(btn=>{
-    btn.addEventListener("click", async ()=>{
-      const i = Number(btn.dataset.delApi);
-      if(!confirm("确定删除这个 API 预设？")) return;
-
-      state.api.presets.splice(i,1);
-      await saveState();
-      renderApiPresets();
-      toast("已删除 API 预设");
-    });
-  });
+  const box = $("apiPresetList"); const presets = state.api.presets || [];
+  if(!presets.length){ box.innerHTML = "暂无 API 预设。"; return; }
+  box.innerHTML = presets.map((p,i)=>`<div class="preset-item"><div class="preset-title">${escapeHtml(p.name)}</div><div class="preset-desc">${escapeHtml(p.baseUrl+"\\n"+p.model)}</div><div class="btn-row"><button class="btn secondary" data-use-api="${i}">使用</button><button class="btn danger" data-del-api="${i}">删除</button></div></div>`).join("");
+  document.querySelectorAll("[data-use-api]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    const p = state.api.presets[Number(btn.dataset.useApi)];
+    state.api.baseUrl = p.baseUrl; state.api.apiKey = p.apiKey; state.api.model = p.model;
+    await saveState(); fillForm(); toast("已切换 API 预设");
+  }));
+  document.querySelectorAll("[data-del-api]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    if(!confirm("确定删除这个 API 预设？")) return;
+    state.api.presets.splice(Number(btn.dataset.delApi),1); await saveState(); renderApiPresets();
+  }));
 }
 
-/* data import/export */
+/* ================= 初始化与数据管理 ================= */
 $("exportDataBtn").addEventListener("click", async ()=>{
-  const history = await dbGetAll(STORE_HISTORY);
-
-  const data = {
-    state,
-    history
-  };
-
-  const blob = new Blob([JSON.stringify(data,null,2)], {type:"application/json;charset=utf-8"});
-  downloadBlob(blob, "177の小剧场生成器_数据备份.json");
+  const data = { state, history: await dbGetAll(STORE_HISTORY) };
+  downloadBlob(new Blob([JSON.stringify(data,null,2)], {type:"application/json;charset=utf-8"}), "177の小剧场生成器_数据备份.json");
 });
-
 $("importDataBtn").addEventListener("click", ()=>$("importDataFile").click());
-
 $("importDataFile").addEventListener("change", async e=>{
-  const file = e.target.files?.[0];
-  if(!file) return;
-
+  const file = e.target.files?.[0]; if(!file) return;
   try{
     const data = JSON.parse(await file.text());
-
     if(data.state){
       state = Object.assign(clone(DEFAULT_STATE), data.state);
       state.api = Object.assign(clone(DEFAULT_STATE.api), data.state.api || {});
       await saveState();
     }
-
     if(Array.isArray(data.history)){
-      for(const item of data.history){
-        if(item.id){
-          await dbPut(STORE_HISTORY, item);
-        }
-      }
+      for(const item of data.history) if(item.id) await dbPut(STORE_HISTORY, item);
     }
-
-    fillForm();
-    await renderHistory();
-    toast("数据导入成功");
-  }catch(err){
-    console.error(err);
-    toast("数据导入失败");
-  }
+    fillForm(); await renderHistory(); toast("数据导入成功");
+  }catch(err){ toast("数据导入失败"); }
 });
-
 $("resetAllBtn").addEventListener("click", async ()=>{
-  if(!confirm("确定清空全部数据？这会删除草稿、历史和 API 设置。")) return;
-
-  await dbClear(STORE_STATE);
-  await dbClear(STORE_HISTORY);
-
-  state = clone(DEFAULT_STATE);
-  await saveState();
-
-  fillForm();
-  await renderHistory();
-
-  toast("已清空全部数据");
+  if(!confirm("确定清空全部数据？")) return;
+  await dbClear(STORE_STATE); await dbClear(STORE_HISTORY);
+  state = clone(DEFAULT_STATE); await saveState(); fillForm(); await renderHistory(); toast("已清空全部数据");
 });
 
-/* init */
 (async function init(){
-  await openDB();
-  await loadState();
-  fillForm();
-  await renderHistory();
+  await openDB(); await loadState();
+  document.querySelectorAll(".h-tab").forEach(b => b.classList.toggle("active", b.dataset.historyMode === state.historyMode));
+  fillForm(); await renderHistory();
 })();
 </script>
 </body>
